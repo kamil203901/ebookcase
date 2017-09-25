@@ -17,6 +17,11 @@ public class BookController {
         return "main";
     }
 
+    @GetMapping("/newauthor")
+    public String newAuthor() {
+        return "newAuthor";
+    }
+
     @GetMapping("/login")
     public String logging() {
         return "login";

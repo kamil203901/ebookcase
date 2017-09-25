@@ -17,15 +17,16 @@ public class Reader {
     private String name;
     private String surname;
     private String password;
+    private String confirmPassword;
     private String email;
 
     public Reader() {}
 
-    public Reader(Integer id, String name, String surname, String password, String email) {
-        this.id = id;
+    public Reader(String name, String surname, String password, String confirmPassword, String email) {
         this.name = name;
         this.surname = surname;
         this.password = password;
+        this.confirmPassword = confirmPassword;
         this.email = email;
     }
 
@@ -61,11 +62,31 @@ public class Reader {
         this.password = password;
     }
 
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Reader{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", password='" + password + '\'' +
+                ", confirmPassword='" + confirmPassword + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
