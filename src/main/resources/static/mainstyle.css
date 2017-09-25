@@ -1,0 +1,14 @@
+body {
+    padding-top: 100px;
+    padding-bottom: 40px;
+    background-color: #eee;
+}
+
+.navbar,
+.navbar-default,
+.navbar-brand,
+.btn-primary {
+    background-color: #0d63b4 !important;
+    color: white !important;
+    font-weight: bold;
+}
