@@ -10,6 +10,7 @@ import pl.kazmierczak.repositories.BookRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 
 /**
@@ -28,6 +29,7 @@ public class BookServiceImpl implements BookService {
     public List<Book> listAll() {
         List<Book> books = new ArrayList<>();
         bookRepository.findAll().forEach(books::add); // e -> books.add(e) == books::add --> JAVA 8
+
         return books;
     }
 
@@ -35,10 +37,7 @@ public class BookServiceImpl implements BookService {
     public List<Book> getByAuthorId(Integer authorId) {
         List<Book> books = this.listAll().stream()
                 .filter(e -> e.getAuthor().getId().equals(authorId))
-                .collect(Collectors.toCollection(ArrayList::new));
-
-
-
+                .collect(Collectors.toList());
 
         /*bookRepository.findAll().forEach(e -> {
             if (e.getAuthor().getId().equals(authorId))
@@ -66,12 +65,19 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void delete(String title) {
-        List<Book> books = new ArrayList<>();
-        bookRepository.findAll().forEach(e -> {
-            if (e.getTitle().equals(title))
-                books.add(e);
-        });
+        List<Book> books = new ArrayList<>(
+                StreamSupport
+                        .stream(bookRepository.findAll().spliterator(), false)
+                        .filter(e -> e.getTitle().equals(title))
+                        .collect(Collectors.toList())
+        );
+        //todo: test it -> don't sure if this would be the same
+//        bookRepository.findAll().forEach(e -> {
+//            if (e.getTitle().equals(title))
+//                books.add(e);
+//        });
         bookRepository.delete(books);
+
     }
 
     @Override
