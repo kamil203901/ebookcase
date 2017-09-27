@@ -10,11 +10,9 @@ import java.util.List;
  */
 public interface BookService {
     List<Book> listAll();
-    List<Book> getByUserId(Integer userId);
+    List<Book> getByAuthorId(Integer authorId);
     List<Book> getByCategoryName(String categoryName);
     void delete(Integer id);
     void delete(String title);
     Book saveOrUpdate(Book book);
-    Book saveOrUpdateBookForm(BookForm bookForm);
-
 }

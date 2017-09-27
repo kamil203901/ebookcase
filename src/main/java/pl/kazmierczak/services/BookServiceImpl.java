@@ -9,7 +9,7 @@ import pl.kazmierczak.repositories.BookRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 
 /**
@@ -17,13 +17,11 @@ import java.util.List;
  */
 @Service
 public class BookServiceImpl implements BookService {
-    private BookRepository bookRepository;
-    private BookFormToBook bookFormToBook;
-
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository, BookFormToBook bookFormToBook) {
+    private BookRepository bookRepository;
+
+    public BookServiceImpl(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
-        this.bookFormToBook = bookFormToBook;
     }
 
     @Override
@@ -34,12 +32,19 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getByUserId(Integer userId) {
-        List<Book> books = new ArrayList<>();
-        bookRepository.findAll().forEach(e -> {
-            if (e.getAuthor().getId().equals(userId))
+    public List<Book> getByAuthorId(Integer authorId) {
+        List<Book> books = this.listAll().stream()
+                .filter(e -> e.getAuthor().getId().equals(authorId))
+                .collect(Collectors.toCollection(ArrayList::new));
+
+
+
+
+        /*bookRepository.findAll().forEach(e -> {
+            if (e.getAuthor().getId().equals(authorId))
                 books.add(e);
-        });
+        });*/
+
         /*
          * for (Book e : bookRepository.findAll())
          *      if (e.getAuthor().getId().equals(userId))
@@ -50,10 +55,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getByCategoryName(String categoryName) {
-        List<Book> booksList = new ArrayList<>();
-        bookRepository.findAll().forEach(
-                e -> { if (e.getCategory().getName().equals(categoryName))
-                    booksList.add(e); });
+        List<Book> booksList = new ArrayList<>(bookRepository.findBooksByCategory_Name(categoryName));
         return booksList;
     }
 
@@ -65,22 +67,16 @@ public class BookServiceImpl implements BookService {
     @Override
     public void delete(String title) {
         List<Book> books = new ArrayList<>();
-        bookRepository.findAll().forEach(e -> { if (e.getTitle().equals(title)) books.add(e);  });
+        bookRepository.findAll().forEach(e -> {
+            if (e.getTitle().equals(title))
+                books.add(e);
+        });
         bookRepository.delete(books);
     }
 
     @Override
     public Book saveOrUpdate(Book book) {
-        bookRepository.save(book);
-        return book;
+        return bookRepository.save(book);
     }
 
-    @Override
-    public Book saveOrUpdateBookForm(BookForm bookForm) {
-        Book savedBook = saveOrUpdate(bookFormToBook.convert(bookForm));
-
-        System.out.println("Saved book id: " + savedBook.getId());
-
-        return savedBook;
-    }
 }

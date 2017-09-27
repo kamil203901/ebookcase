@@ -30,6 +30,15 @@ public class Book {
         this.category = category;
     }
 
+    public Book(Book bookToCopy) {
+        this(   bookToCopy.getId(),
+                bookToCopy.getTitle(),
+                bookToCopy.getAuthor(),
+                bookToCopy.getPages(),
+                bookToCopy.getCategory()
+        );
+    }
+
     public Integer getId() {
         return id;
     }
