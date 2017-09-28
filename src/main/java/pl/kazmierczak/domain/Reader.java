@@ -1,9 +1,18 @@
 package pl.kazmierczak.domain;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 
 /**
  * Created by kamil on 22.09.17.
@@ -15,11 +24,20 @@ public class Reader {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    private String login;
     private String name;
     private String surname;
+    @Transient
+    @NotNull
+    @Size(min = 5, max = 15)
     private String password;
+    @Transient
+    @NotNull
+    @Size(min = 5, max = 15)
     private String confirmPassword;
     private String email;
+    private String passwordEncrypted;   // password in encrypted form
+    private String passwordSalt;        // random number added to the password
 
     public Reader() {}
 
@@ -77,6 +95,30 @@ public class Reader {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPasswordEncrypted() {
+        return passwordEncrypted;
+    }
+
+    public void setPasswordEncrypted(String passwordEncrypted) {
+        this.passwordEncrypted = passwordEncrypted;
+    }
+
+    public String getPasswordSalt() {
+        return passwordSalt;
+    }
+
+    public void setPasswordSalt(String passwordSalt) {
+        this.passwordSalt = passwordSalt;
     }
 
     @Override
