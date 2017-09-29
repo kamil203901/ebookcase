@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
+import static org.mockito.AdditionalAnswers.delegatesTo;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 
 public class BookServiceImplTest {
@@ -33,6 +34,8 @@ public class BookServiceImplTest {
         bookList = new ArrayList<>();
         book = new Book(3, "a", new Author(), 360, new Category("horror"));
 
+        Mockito.doAnswer(returnsFirstArg()).when(bookRepositoryMock).save(Matchers.any(Book.class));
+        Mockito.when(bookRepositoryMock.findAll()).thenReturn(bookList);
     }
 
     @Test
@@ -60,17 +63,12 @@ public class BookServiceImplTest {
     public void delete() throws Exception {
     }
 
-    @Test
-    public void delete1() throws Exception {
-    }
 
     @Test
     public void saveOrUpdate() throws Exception {
         bookList.add(book);
-
-        Mockito.doAnswer(returnsFirstArg()).when(bookRepositoryMock).save(Matchers.any(Book.class));
-
         Book book1 = bookService.saveOrUpdate(book);
+
         assertEquals("a", book1.getTitle());
         assertEquals(Integer.valueOf(3), book1.getId());
         assertNotEquals(100, book1.getPages());

@@ -44,7 +44,30 @@ body {
 .btn-primary {
     background-color: #0d63b4 !important;
     color: white !important;
-    font-weight: bold;
+    font-size: 16px;
+}
+
+.navbar-brand {
+    font-size: 22px !important;
+    font-weight: bold !important;
+}
+
+ul.navbar-nav > li span.glyphicon {
+    width: 16px;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color:white;
+}
+
+.navbar .navbar-nav {
+    display: inline-block;
+    float: none;
+    vertical-align: top;
+}
+
+.navbar .navbar-collapse {
+    text-align: center;
 }
 
 
